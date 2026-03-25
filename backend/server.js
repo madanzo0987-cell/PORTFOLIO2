@@ -3,35 +3,20 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ Allow your Vercel frontend
-app.use(cors({
-  origin: "https://portfolio-2-one-omega.vercel.app",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
-}));
-
-// ✅ Middleware
+app.use(cors()); // allow all (for now)
 app.use(express.json());
 
-// ✅ Test route
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
-
-// ✅ API route (IMPORTANT)
+// ✅ IMPORTANT ROUTE
 app.post("/users", (req, res) => {
-  const { name, email, message } = req.body;
-
-  console.log("Received Data:", name, email, message);
-
-  res.json({
-    success: true,
-    message: "Feedback received successfully"
-  });
+  console.log(req.body);
+  res.json({ message: "Success" });
 });
 
-// ✅ Start server
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// test route
+app.get("/", (req, res) => {
+  res.send("Server running");
+});
+
+app.listen(5000, () => {
+  console.log("Server started");
 });
