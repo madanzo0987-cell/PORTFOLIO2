@@ -45,36 +45,6 @@ nav h1 { color: red; }
     text-align: center;
 }
 
-/* CERTIFICATION CARDS */
-.cert-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.cert-card {
-    background: rgba(0,0,0,0.6);
-    border: 1px solid black;
-    border-radius: 15px;
-    margin: 15px;
-    padding: 20px;
-    width: 250px;
-    transition: 0.3s;
-}
-
-.cert-card:hover {
-    transform: scale(1.05);
-}
-
-.cert-card img {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.cert-card h3 {
-    color: black;
-}
-
 /* FORM */
 input, textarea, button {
     padding: 10px;
@@ -98,35 +68,8 @@ button {
 </nav>
 
 <div class="hero">
-    <h1>Madan kumar</h1>
+    <h1>Madan Kumar</h1>
     <p>BCA Cloud Computing</p>
-</div>
-
-<!-- CERTIFICATIONS -->
-<div class="section">
-    <h2>Certifications</h2>
-
-    <div class="cert-container">
-
-        <div class="cert-card">
-            <img src="cert1.jpg" alt="Certificate 1">
-            <h3>AWS Cloud</h3>
-            <p>Amazon Web Services Certification</p>
-        </div>
-
-        <div class="cert-card">
-            <img src="cert2.jpg" alt="Certificate 2">
-            <h3>Cloud Computing</h3>
-            <p>Basics of Cloud Technology</p>
-        </div>
-
-        <div class="cert-card">
-            <img src="cert3.jpg" alt="Certificate 3">
-            <h3>Web Development</h3>
-            <p>HTML, CSS, JS Fundamentals</p>
-        </div>
-
-    </div>
 </div>
 
 <!-- FEEDBACK -->
@@ -148,22 +91,35 @@ button {
 function sendData(e) {
     e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
 
-    fetch("https://YOUR-RENDER-URL.onrender.com/users", {
+    // Replace with your Render backend URL
+    const API_URL = "https://YOUR-RENDER-URL.onrender.com/users";
+
+    fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({ name, email, message })
     })
-    .then(res => res.json())
-    .then(() => alert("Feedback sent ✅"))
-    .catch(() => alert("Error sending feedback"));
+    .then(async res => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        return data;
+    })
+    .then(data => {
+        alert(data.message || "Feedback sent ✅");
+        document.querySelector("form").reset();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("❌ Error sending feedback");
+    });
 }
 </script>
 
 </body>
-</html> 
+</html>
