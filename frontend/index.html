@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madan Portfolio</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    color: white;
+    background: url('https://images.unsplash.com/photo-1493238792000-8113da705763') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.7);
+    min-height: 100vh;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+nav h1 { color: red; }
+
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.hero h1 {
+    font-size: 45px;
+    color: red;
+}
+
+.section {
+    background: rgba(255,255,255,0.1);
+    margin: 20px;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* CERTIFICATION CARDS */
+.cert-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cert-card {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid black;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 20px;
+    width: 250px;
+    transition: 0.3s;
+}
+
+.cert-card:hover {
+    transform: scale(1.05);
+}
+
+.cert-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.cert-card h3 {
+    color: black;
+}
+
+/* FORM */
+input, textarea, button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    background: red;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<nav>
+    <h1>MADAN</h1>
+</nav>
+
+<div class="hero">
+    <h1>Madan kumar</h1>
+    <p>BCA Cloud Computing</p>
+</div>
+
+<!-- CERTIFICATIONS -->
+<div class="section">
+    <h2>Certifications</h2>
+
+    <div class="cert-container">
+
+        <div class="cert-card">
+            <img src="cert1.jpg" alt="Certificate 1">
+            <h3>AWS Cloud</h3>
+            <p>Amazon Web Services Certification</p>
+        </div>
+
+        <div class="cert-card">
+            <img src="cert2.jpg" alt="Certificate 2">
+            <h3>Cloud Computing</h3>
+            <p>Basics of Cloud Technology</p>
+        </div>
+
+        <div class="cert-card">
+            <img src="cert3.jpg" alt="Certificate 3">
+            <h3>Web Development</h3>
+            <p>HTML, CSS, JS Fundamentals</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="section contact">
+    <h2>Feedback</h2>
+
+    <form onsubmit="sendData(event)">
+        <input type="text" id="name" placeholder="Your Name" required><br>
+        <input type="email" id="email" placeholder="Your Email" required><br>
+        <textarea id="message" placeholder="Your Feedback"></textarea><br>
+        <button type="submit">Send</button>
+    </form>
+
+</div>
+
+</div>
+
+<script>
+function sendData(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    fetch("https://YOUR-RENDER-URL.onrender.com/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, message })
+    })
+    .then(res => res.json())
+    .then(() => alert("Feedback sent ✅"))
+    .catch(() => alert("Error sending feedback"));
+}
+</script>
+
+</body>
+</html> 
