@@ -51,23 +51,11 @@ input, textarea, button {
     margin: 10px;
     border-radius: 5px;
     border: none;
-    width: 80%;
-    max-width: 400px;
 }
 
 button {
     background: red;
     color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background: darkred;
-}
-
-#status {
-    margin-top: 10px;
-    font-size: 14px;
 }
 </style>
 </head>
@@ -91,9 +79,8 @@ button:hover {
     <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your Name" required><br>
         <input type="email" id="email" placeholder="Your Email" required><br>
-        <textarea id="message" placeholder="Your Feedback" required></textarea><br>
+        <textarea id="message" placeholder="Your Feedback"></textarea><br>
         <button type="submit">Send</button>
-        <p id="status"></p>
     </form>
 
 </div>
@@ -101,53 +88,39 @@ button:hover {
 </div>
 
 <script>
-const form = document.getElementById("feedbackForm");
-const status = document.getElementById("status");
+document.getElementById("feedbackForm").addEventListener("submit", sendData);
 
-// 🔴 IMPORTANT: Replace with your real Render backend URL
-const API_URL = "https://YOUR-RENDER-URL.onrender.com/users";
-
-form.addEventListener("submit", async (e) => {
+function sendData(e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const message = document.getElementById("message").value.trim();
 
-    // ✅ Validation
-    if (!name || !email || !message) {
-        status.innerText = "⚠️ Please fill all fields";
-        status.style.color = "yellow";
-        return;
-    }
+    // ⚡ Replace with your Render backend URL
+    const API_URL = "https://YOUR-RENDER-URL.onrender.com/users";
 
-    status.innerText = "⏳ Sending...";
-    status.style.color = "white";
-
-    try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name, email, message })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) throw new Error(data.error || "Failed");
-
-        status.innerText = "✅ Feedback sent successfully!";
-        status.style.color = "lightgreen";
-
-        form.reset();
-
-    } catch (error) {
-        console.error(error);
-        status.innerText = "❌ Error sending feedback";
-        status.style.color = "red";
-    }
-});
+    fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, message })
+    })
+    .then(async res => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        return data;
+    })
+    .then(data => {
+        alert(data.message || "Feedback sent ✅");
+        document.getElementById("feedbackForm").reset();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("❌ Error sending feedback");
+    });
+}
 </script>
 
 </body>
