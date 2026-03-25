@@ -9,7 +9,7 @@ function sendData(e) {
     const message = document.getElementById("message").value.trim();
 
     // ⚡ Use your Render backend URL here
-    const API_URL = "https://portfolio2-1-vx2k.onrender.com/users"; 
+    const API_URL = "https://portfolio2-2-gs78.onrender.com/users"; 
 
     fetch(API_URL, {
         method: "POST",
